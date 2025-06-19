@@ -118,5 +118,17 @@ This platform digitizes and streamlines the entire supply chain process:
 - Access analytics and KPIs for the entire platform.
 - Cannot approve/reject individual product requests (handled by suppliers).
 
----
+## Space for Improvement
+
+- Integrate advanced analytics (e.g., supplier performance, cost analysis, inventory turnover)
+- Add shipment/delivery tracking and notifications
+- Implement multi-level approval workflows for high-value requests
+- Enable supplier/employee chat or messaging
+- Add self-service password reset and user profile management
+- Support document uploads (invoices, certificates)
+- Integrate with payment gateways for procurement
+- Add automated tests (unit, integration, end-to-end)
+- Deploy with CI/CD pipelines for automated updates
+- Enhance chatbot with more AI capabilities or multilingual support
+- Improve accessibility and add more user training/help resources
 
