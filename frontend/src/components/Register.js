@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { register } from '../services/api';
 
 const Register = ({ onRegister }) => {
-  const [form, setForm] = useState({ name: '', email: '', password: '', role: 'employee' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', role: 'buyer' });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -14,7 +14,7 @@ const Register = ({ onRegister }) => {
     setSuccess('');
     try {
       const res = await register(form);
-      if (form.role === 'supplier') {
+      if (form.role === 'seller') {
         setSuccess('Your registration request has been sent to the admin. You can start selling after verification.');
       } else {
         setSuccess('Registration successful! You can now log in.');
@@ -33,8 +33,8 @@ const Register = ({ onRegister }) => {
         <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required />
         <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} required />
         <select name="role" value={form.role} onChange={handleChange}>
-          <option value="employee">Employee</option>
-          <option value="supplier">Supplier</option>
+          <option value="buyer">Buyer</option>
+          <option value="seller">Seller</option>
         </select>
         <button type="submit">Register</button>
         {error && <div className="error">{error}</div>}

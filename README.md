@@ -5,10 +5,10 @@ A smart inventory and procurement platform for rural institutions (schools, anga
 ## Features
 
 - Real-time inventory tracking
-- Supplier product listing
-- Employee purchase requests
+- Seller product listing
+- Buyer purchase requests
 - Demand forecasting (AI/ML mock)
-- Role-based access (Supplier, Employee, Admin)
+- Role-based access (Seller, Buyer, Admin)
 - JWT authentication
 - Scalable MongoDB backend
 
@@ -23,8 +23,8 @@ A smart inventory and procurement platform for rural institutions (schools, anga
 
 - **Subscription**: Institutions pay a monthly fee for premium analytics.
 - **Transaction Fee**: Small commission on each procurement.
-- **Supplier Ads**: Suppliers pay for featured listings.
-- **Data Insights**: Sell anonymized demand data to suppliers/government.
+- **Seller Ads**: Sellers pay for featured listings.
+- **Data Insights**: Sell anonymized demand data to sellers/government.
 
 ## Getting Started
 
@@ -42,16 +42,16 @@ Use these accounts to log in and test the system:
 - **Admin**
   - Email: admin@example.com
   - Password: password
-- **Supplier**
-  - Email: supplier1@example.com
+- **Seller**
+  - Email: seller1@example.com
   - Password: password
-- **Employee**
-  - Email: employee1@example.com
+- **Buyer**
+  - Email: buyer1@example.com
   - Password: password
 
 ## User Roles & Permissions
 
-### Employee
+### Buyer
 - View all available products and their details
 - Search/filter products by name
 - Raise purchase requests for available products
@@ -59,7 +59,7 @@ Use these accounts to log in and test the system:
 - Rate products after their purchase request is approved (from the requests tab only)
 - See product ratings and analytics
 
-### Supplier
+### Seller
 - Add new products with all details
 - View and manage their own products
 - See requests for their products and approve/reject them
@@ -72,7 +72,7 @@ Use these accounts to log in and test the system:
 - Cannot approve/reject requests
 
 ## Product Ratings
-- Employees can rate products only after their purchase request is approved (from the requests tab)
+- Buyers can rate products only after their purchase request is approved (from the requests tab)
 - Product ratings are displayed in the product list for all roles
 - Ratings update in real-time after each new rating
 
@@ -83,29 +83,29 @@ For frequently asked questions, please refer to the [FAQ.md](FAQ.md) file.
 ## Business Problem & Solution
 
 **Problem:**
-Rural institutions (schools, clinics, anganwadis) often face challenges with manual, paper-based supply chain processes. This leads to delays, stockouts, lack of transparency, and inefficient procurement, making it hard to track inventory, manage suppliers, and make data-driven decisions.
+Rural institutions (schools, clinics, anganwadis) often face challenges with manual, paper-based supply chain processes. This leads to delays, stockouts, lack of transparency, and inefficient procurement, making it hard to track inventory, manage sellers, and make data-driven decisions.
 
 **Solution:**
 This platform digitizes and streamlines the entire supply chain process:
 - Provides real-time inventory tracking and product management.
-- Enables employees to request products and track their status.
-- Allows suppliers to add/manage products and handle requests efficiently.
+- Enables buyers to request products and track their status.
+- Allows sellers to add/manage products and handle requests efficiently.
 - Gives admins full visibility into all products, requests, and analytics.
 - Automates notifications, approvals, and analytics (KPIs, demand forecasting).
-- Supports supplier onboarding and approval for quality control.
+- Supports seller onboarding and approval for quality control.
 - Includes a chatbot for user support and platform guidance.
 - Ensures a user-friendly, responsive interface for all roles.
 
 ## User Roles & Responsibilities
 
-### Employee
+### Buyer
 - Search and view available products.
 - Raise purchase requests for products in stock.
 - Track the status of their requests and receive notifications.
 - Rate products after approved purchase.
 - Use analytics to make informed decisions.
 
-### Supplier
+### Seller
 - Register and get approved by admin before selling.
 - Add, update, and manage their own products.
 - View and respond to purchase requests for their products (approve/reject).
@@ -113,17 +113,17 @@ This platform digitizes and streamlines the entire supply chain process:
 - Monitor KPIs and analytics for their products.
 
 ### Admin
-- Approve new supplier registrations.
+- Approve new seller registrations.
 - View all products and all purchase requests in the system.
 - Access analytics and KPIs for the entire platform.
-- Cannot approve/reject individual product requests (handled by suppliers).
+- Cannot approve/reject individual product requests (handled by sellers).
 
 ## Space for Improvement
 
-- Integrate advanced analytics (e.g., supplier performance, cost analysis, inventory turnover)
+- Integrate advanced analytics (e.g., seller performance, cost analysis, inventory turnover)
 - Add shipment/delivery tracking and notifications
 - Implement multi-level approval workflows for high-value requests
-- Enable supplier/employee chat or messaging
+- Enable seller/buyer chat or messaging
 - Add self-service password reset and user profile management
 - Support document uploads (invoices, certificates)
 - Integrate with payment gateways for procurement

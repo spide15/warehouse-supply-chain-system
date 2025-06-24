@@ -12,7 +12,7 @@ const SupplierNotifications = ({ token, user }) => {
   if (!requests.length) return null;
   return (
     <div className="product-list" style={{ maxWidth: 600, margin: '2rem auto', background: '#e3f2fd' }}>
-      <h3>Supplier Notifications</h3>
+      <h3>Seller Notifications</h3>
       <ul>
         {requests.map(r => (
           <li key={r._id} style={{ marginBottom: 10 }}>

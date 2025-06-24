@@ -23,8 +23,8 @@ const AdminSupplierApproval = ({ token }) => {
 
   return (
     <div className="product-list" style={{ maxWidth: 600 }}>
-      <h3>Pending Supplier Approvals</h3>
-      {loading ? <div>Loading...</div> : pending.length === 0 ? <div>No pending suppliers.</div> : (
+      <h3>Pending Seller Approvals</h3>
+      {loading ? <div>Loading...</div> : pending.length === 0 ? <div>No pending sellers.</div> : (
         <table className="styled-table">
           <thead>
             <tr><th>Name</th><th>Email</th><th>Action</th></tr>

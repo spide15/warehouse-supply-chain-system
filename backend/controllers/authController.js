@@ -8,8 +8,8 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ name, email, password: hashedPassword, role });
     await user.save();
-    if (role === 'supplier') {
-      return res.status(201).json({ message: 'Supplier registered. Awaiting admin approval.' });
+    if (role === 'seller') {
+      return res.status(201).json({ message: 'Seller registered. Awaiting admin approval.' });
     }
     res.status(201).json({ message: 'User registered' });
   } catch (err) {

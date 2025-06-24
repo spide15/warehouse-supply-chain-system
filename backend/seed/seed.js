@@ -11,18 +11,18 @@ const Product = mongoose.model('Product', new mongoose.Schema({
   quantity: Number,    // Added quantity
   sku: { type: String, unique: true },
   price: Number,
-  supplier: { type: mongoose.Schema.Types.ObjectId, ref: 'User' } // Changed supplierId to supplier and added ref
+  seller: { type: mongoose.Schema.Types.ObjectId, ref: 'User' } // Changed supplier to seller
 }));
 const PurchaseRequest = mongoose.model('PurchaseRequest', new mongoose.Schema({
   productId: mongoose.Schema.Types.ObjectId,
-  employeeId: mongoose.Schema.Types.ObjectId,
+  buyerId: mongoose.Schema.Types.ObjectId,
   requestedQty: Number,
   date: Date
 }));
 const Purchase = mongoose.model('Purchase', new mongoose.Schema({
   productId: mongoose.Schema.Types.ObjectId,
-  employeeId: mongoose.Schema.Types.ObjectId,
-  supplierId: mongoose.Schema.Types.ObjectId,
+  buyerId: mongoose.Schema.Types.ObjectId,
+  sellerId: mongoose.Schema.Types.ObjectId,
   qty: Number,
   totalPrice: Number,
   purchaseDate: Date
@@ -53,32 +53,32 @@ async function seed() {
   const password = await bcrypt.hash('password', 10);
   // Users
   const admin = await User.create({ name: 'Admin', email: 'admin@example.com', password, role: 'admin' });
-  const suppliers = [];
+  const sellers = [];
   for (let i = 1; i <= 5; i++) {
-    suppliers.push(await User.create({ name: `Supplier${i}`, email: `supplier${i}@example.com`, password, role: 'supplier' }));
+    sellers.push(await User.create({ name: `Seller${i}`, email: `seller${i}@example.com`, password, role: 'seller' }));
   }
-  const employees = [];
+  const buyers = [];
   for (let i = 1; i <= 5; i++) {
-    employees.push(await User.create({ name: `Employee${i}`, email: `employee${i}@example.com`, password, role: 'employee' }));
+    buyers.push(await User.create({ name: `Buyer${i}`, email: `buyer${i}@example.com`, password, role: 'buyer' }));
   }
   // Products
   const products = [];
   for (let i = 0; i < 50; i++) {
-    const supplier = suppliers[i % suppliers.length];
+    const seller = sellers[i % sellers.length];
     products.push(await Product.create({
       name: stationeryNames[i],
       description: `High quality ${stationeryNames[i]} for institutional use`,
       quantity: Math.floor(Math.random() * 100) + 10,
       sku: `SKU-${(i+1).toString().padStart(3, '0')}`,
       price: Math.floor(Math.random() * 200) + 20,
-      supplier: supplier._id
+      seller: seller._id
     }));
   }
   // Purchase Requests & Purchases
   const now = new Date();
   const purchaseRequests = [];
   const purchases = [];
-  for (const emp of employees) {
+  for (const buyer of buyers) {
     for (let j = 0; j < 3; j++) {
       const product = products[Math.floor(Math.random() * products.length)];
       const monthsAgo = Math.floor(Math.random() * 8);
@@ -86,7 +86,7 @@ async function seed() {
       const requestedQty = Math.floor(Math.random() * 10) + 1;
       purchaseRequests.push(await PurchaseRequest.create({
         productId: product._id,
-        employeeId: emp._id,
+        buyerId: buyer._id,
         requestedQty,
         date
       }));
@@ -94,8 +94,8 @@ async function seed() {
       if (Math.random() > 0.2) { // 80% requests fulfilled
         purchases.push(await Purchase.create({
           productId: product._id,
-          employeeId: emp._id,
-          supplierId: product.supplierId,
+          buyerId: buyer._id,
+          sellerId: product.seller,
           qty: requestedQty,
           totalPrice: requestedQty * product.price,
           purchaseDate: date

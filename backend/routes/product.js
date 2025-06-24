@@ -6,13 +6,13 @@ const { authenticate, authorize } = require('../middleware/auth');
 // List all products
 router.get('/', authenticate, productController.listProducts);
 
-// Supplier adds a product
-router.post('/', authenticate, authorize(['supplier']), productController.addProduct);
+// Seller adds a product
+router.post('/', authenticate, authorize(['seller']), productController.addProduct);
 
-// Supplier updates a product
-router.put('/:id', authenticate, authorize(['supplier']), productController.updateProduct);
+// Seller updates a product
+router.put('/:id', authenticate, authorize(['seller']), productController.updateProduct);
 
-// Employee rates a product after purchase
-router.post('/rate', authenticate, authorize(['employee']), productController.rateProduct);
+// Buyer rates a product after purchase
+router.post('/rate', authenticate, authorize(['buyer']), productController.rateProduct);
 
 module.exports = router;

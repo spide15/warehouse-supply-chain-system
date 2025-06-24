@@ -11,6 +11,7 @@ import SupplierRequests from '../components/SupplierRequests';
 import AdminSupplierApproval from '../components/AdminSupplierApproval';
 import { useLocation } from 'react-router-dom';
 import Chatbot from '../components/Chatbot';
+import ForecastChart from '../components/ForecastChart';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -70,12 +71,7 @@ const DashboardPage = ({ user, token }) => {
         {tab === 'requests' && user.role === 'supplier' && <SupplierRequests token={token} user={user} onStatusChange={handleStatusChange} />}
         {tab === 'requests' && user.role === 'employee' && <MyRequests token={token} user={user} onRated={handleProductAdded} />}
         {tab === 'requests' && user.role === 'admin' && <AdminAnalytics token={token} />}
-        {tab === 'forecast' && user.role === 'employee' && <Analytics token={token} />}
-        {tab === 'forecast' && user.role === 'admin' && (
-          <div style={{ margin: '2rem', textAlign: 'center' }}>
-            Feature coming soon: Admin Forecast
-          </div>
-        )}
+        {tab === 'forecast' && <ForecastChart token={token} />}
         {tab === 'analytics' && <TrendsChart token={token} />}
         {tab === 'suppliers' && user.role === 'admin' && <AdminSupplierApproval token={token} />}
         {tab === 'help' && (
@@ -83,16 +79,16 @@ const DashboardPage = ({ user, token }) => {
             <h3>Help: Role-based Access</h3>
             <ul>
               <li>
-                <b>Employee:</b> View all available products, search/filter by name, raise purchase requests, see and track their own requests, rate products after purchase (from the requests tab), and view product ratings and analytics.
+                <b>Buyer:</b> View all available products, search/filter by name, raise purchase requests, see and track their own requests, rate products after purchase (from the requests tab), and view product ratings and analytics.
               </li>
               <li>
-                <b>Supplier:</b> Add and manage their own products, see and approve/reject requests for their products, view notifications for request status changes, and see KPIs/analytics for their products.
+                <b>Seller:</b> Add and manage their own products, see and approve/reject requests for their products, view notifications for request status changes, and see KPIs/analytics for their products.
               </li>
               <li>
                 <b>Admin:</b> View all products and all purchase requests, see analytics and KPIs for the entire system. Cannot approve/reject requests.
               </li>
             </ul>
-            <p><b>Product Ratings:</b> Employees can rate products only after their purchase request is approved (from the requests tab). Ratings are displayed in the product list for all roles and update in real-time after each new rating.</p>
+            <p><b>Product Ratings:</b> Buyers can rate products only after their purchase request is approved (from the requests tab). Ratings are displayed in the product list for all roles and update in real-time after each new rating.</p>
             <p>Use the tabs above to switch between features. On mobile, tabs stack vertically for easier access.</p>
           </div>
         )}

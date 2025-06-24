@@ -61,7 +61,7 @@ const ProductList = ({ token, refresh, user }) => {
         <div className="table-responsive">
           <table className="styled-table">
             <thead>
-              <tr><th>Name</th><th>Description</th><th>Qty</th><th>Price</th><th>Supplier</th><th>Rating</th>{user?.role === 'employee' && <th>Action</th>}</tr>
+              <tr><th>Name</th><th>Description</th><th>Qty</th><th>Price</th><th>Seller</th><th>Rating</th>{user?.role === 'buyer' && <th>Action</th>}</tr>
             </thead>
             <tbody>
               {filteredProducts.map((p, idx) => (
@@ -70,9 +70,9 @@ const ProductList = ({ token, refresh, user }) => {
                   <td>{p.description}</td>
                   <td>{p.quantity}</td>
                   <td>₹{p.price}</td>
-                  <td>{p.supplier?.name}</td>
+                  <td>{p.seller?.name}</td>
                   <td>{p.avgRating ? `${p.avgRating} ★` : 'No ratings'}</td>
-                  {user?.role === 'employee' && <td>{p.quantity > 0 ? <button onClick={() => setSelectedProduct(p)} style={{ background: '#1976d2', color: '#fff', border: 'none', borderRadius: 6, padding: '6px 16px', cursor: 'pointer' }}>Request</button> : <span style={{ color: '#d32f2f' }}>Out of stock</span>}</td>}
+                  {user?.role === 'buyer' && <td>{p.quantity > 0 ? <button onClick={() => setSelectedProduct(p)} style={{ background: '#1976d2', color: '#fff', border: 'none', borderRadius: 6, padding: '6px 16px', cursor: 'pointer' }}>Request</button> : <span style={{ color: '#d32f2f' }}>Out of stock</span>}</td>}
                 </tr>
               ))}
             </tbody>
@@ -87,9 +87,9 @@ const ProductList = ({ token, refresh, user }) => {
               <div className="product-desc" style={{ color: '#555' }}>{p.description}</div>
               <div><b>Qty:</b> {p.quantity}</div>
               <div><b>Price:</b> ₹{p.price}</div>
-              <div><b>Supplier:</b> {p.supplier?.name}</div>
+              <div><b>Seller:</b> {p.seller?.name}</div>
               <div><b>Rating:</b> {p.avgRating ? `${p.avgRating} ★` : 'No ratings'}</div>
-              {user?.role === 'employee' && (p.quantity > 0 ? <button onClick={() => setSelectedProduct(p)} style={{ background: '#1976d2', color: '#fff', border: 'none', borderRadius: 6, padding: '8px 16px', marginTop: 8, fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>Request</button> : <span style={{ color: '#d32f2f', fontWeight: 600 }}>Out of stock</span>)}
+              {user?.role === 'buyer' && (p.quantity > 0 ? <button onClick={() => setSelectedProduct(p)} style={{ background: '#1976d2', color: '#fff', border: 'none', borderRadius: 6, padding: '8px 16px', marginTop: 8, fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>Request</button> : <span style={{ color: '#d32f2f', fontWeight: 600 }}>Out of stock</span>)}
             </div>
           ))}
         </div>
