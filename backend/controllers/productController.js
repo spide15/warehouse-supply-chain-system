@@ -2,7 +2,7 @@ const Product = require('../models/Product');
 const PurchaseRequest = require('../models/PurchaseRequest');
 
 exports.listProducts = async (req, res) => {
-  const products = await Product.find().populate('supplier', 'name');
+  const products = await Product.find().populate('seller', 'name');
   // Calculate average rating for each product
   const productsWithRating = products.map(p => {
     const avgRating = p.ratings && p.ratings.length > 0 ?
@@ -14,13 +14,13 @@ exports.listProducts = async (req, res) => {
 
 exports.addProduct = async (req, res) => {
   const { name, description, quantity, price, sku } = req.body;
-  const product = new Product({ name, description, quantity, price, sku, supplier: req.user.id });
+  const product = new Product({ name, description, quantity, price, sku, seller: req.user.id });
   await product.save();
   res.status(201).json(product);
 };
 
 exports.updateProduct = async (req, res) => {
-  const product = await Product.findOneAndUpdate({ _id: req.params.id, supplier: req.user.id }, req.body, { new: true });
+  const product = await Product.findOneAndUpdate({ _id: req.params.id, seller: req.user.id }, req.body, { new: true });
   if (!product) return res.status(404).json({ error: 'Product not found' });
   res.json(product);
 };

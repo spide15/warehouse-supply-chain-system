@@ -11,8 +11,8 @@ const SupplierRequests = ({ token, user, onStatusChange }) => {
   const fetchData = () => {
     setLoading(true);
     getPurchaseRequests(token).then(res => {
-      // Only show requests for products supplied by this supplier
-      const filtered = res.data.filter(r => r.product && (r.product.supplier?._id === user.id || r.product.supplier === user.id));
+      // Only show requests for products owned by this seller
+      const filtered = res.data.filter(r => r.product && (r.product.seller?._id === user.id || r.product.seller === user.id));
       setRequests(filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
       setLoading(false);
     });
@@ -36,7 +36,7 @@ const SupplierRequests = ({ token, user, onStatusChange }) => {
       {loading ? <div>Loading...</div> : (
         <table className="styled-table">
           <thead>
-            <tr><th>Product</th><th>Qty</th><th>Status</th><th>By</th><th>Action</th></tr>
+            <tr><th>Product</th><th>Qty</th><th>Status</th><th>Buyer</th><th>Seller</th><th>Action</th></tr>
           </thead>
           <tbody>
             {requests.map(r => (
@@ -45,6 +45,7 @@ const SupplierRequests = ({ token, user, onStatusChange }) => {
                 <td>{r.quantity}</td>
                 <td>{r.status}</td>
                 <td>{r.requestedBy?.name}</td>
+                <td>{r.product?.seller?.name || '-'}</td>
                 <td>
                   {r.status === 'pending' ? (
                     <>

@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema({
   name: String,
   description: String,
   quantity: Number,
-  supplier: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  seller: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // changed from supplier to seller
   price: Number,
   sku: { type: String, unique: true, required: true },
   ratings: [ratingSchema]

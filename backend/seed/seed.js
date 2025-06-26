@@ -1,24 +1,14 @@
 // Fresh seed script for MBA-level supply chain project
 const mongoose = require('mongoose');
+mongoose.set('strictPopulate', false); // Allow population of paths not in schema
 const bcrypt = require('bcryptjs');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 const User = require('../models/User');
-const Product = mongoose.model('Product', new mongoose.Schema({
-  name: String,
-  description: String, // Added description
-  quantity: Number,    // Added quantity
-  sku: { type: String, unique: true },
-  price: Number,
-  seller: { type: mongoose.Schema.Types.ObjectId, ref: 'User' } // Changed supplier to seller
-}));
-const PurchaseRequest = mongoose.model('PurchaseRequest', new mongoose.Schema({
-  productId: mongoose.Schema.Types.ObjectId,
-  buyerId: mongoose.Schema.Types.ObjectId,
-  requestedQty: Number,
-  date: Date
-}));
+const Product = require('../models/Product');
+const PurchaseRequest = require('../models/PurchaseRequest');
+// Purchase and Inventory models are not present in models folder, so keep local definitions for those only
 const Purchase = mongoose.model('Purchase', new mongoose.Schema({
   productId: mongoose.Schema.Types.ObjectId,
   buyerId: mongoose.Schema.Types.ObjectId,
@@ -85,8 +75,8 @@ async function seed() {
       const date = new Date(now.getFullYear(), now.getMonth() - monthsAgo, Math.floor(Math.random() * 28) + 1);
       const requestedQty = Math.floor(Math.random() * 10) + 1;
       purchaseRequests.push(await PurchaseRequest.create({
-        productId: product._id,
-        buyerId: buyer._id,
+        product: product._id,
+        requestedBy: buyer._id,
         requestedQty,
         date
       }));

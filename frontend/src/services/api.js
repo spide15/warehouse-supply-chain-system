@@ -15,6 +15,9 @@ export const getProducts = (token) =>
 export const addProduct = (data, token) =>
   axios.post(`${API_URL}/products`, data, { headers: { Authorization: `Bearer ${token}` } });
 
+export const updateProduct = (id, data, token) =>
+  axios.put(`${API_URL}/products/${id}`, data, { headers: { Authorization: `Bearer ${token}` } });
+
 export const raisePurchaseRequest = (data, token) =>
   axios.post(`${API_URL}/purchase`, data, { headers: { Authorization: `Bearer ${token}` } });
 

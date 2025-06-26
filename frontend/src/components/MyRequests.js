@@ -11,7 +11,7 @@ const MyRequests = ({ token, user, onRated }) => {
 
   useEffect(() => {
     getPurchaseRequests(token).then(res => {
-      setRequests(res.data.filter(r => r.requestedBy?._id === user.id));
+      setRequests(res.data);
     });
   }, [token, user.id]);
 
@@ -34,7 +34,7 @@ const MyRequests = ({ token, user, onRated }) => {
       <h3>My Purchase Requests</h3>
       <table className="styled-table">
         <thead>
-          <tr><th>Product</th><th>Qty</th><th>Status</th><th>Date</th><th>Notification</th><th>Rate</th></tr>
+          <tr><th>Product</th><th>Qty</th><th>Status</th><th>Date</th><th>Buyer</th><th>Seller</th><th>Notification</th><th>Rate</th></tr>
         </thead>
         <tbody>
           {requests.map(r => (
@@ -43,6 +43,8 @@ const MyRequests = ({ token, user, onRated }) => {
               <td>{r.quantity}</td>
               <td>{r.status}</td>
               <td>{new Date(r.createdAt).toLocaleDateString()}</td>
+              <td>{r.requestedBy?.name}</td>
+              <td>{r.product?.seller?.name || '-'}</td>
               <td>{r.notification}</td>
               <td>{r.status === 'approved' ? <button onClick={() => handleRate(r)} style={{ background: 'linear-gradient(90deg,#1976d2,#42a5f5)', color: '#fff', border: 'none', borderRadius: 8, padding: '6px 16px', fontWeight: 600, fontSize: 15, cursor: 'pointer', boxShadow: '0 2px 8px #1976d233' }}>Rate</button> : <span style={{ color: '#aaa' }}>-</span>}</td>
             </tr>

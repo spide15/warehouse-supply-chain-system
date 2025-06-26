@@ -21,19 +21,18 @@ const tabOptionsByRole = {
   admin: [
     { key: 'products', label: 'Products' },
     { key: 'requests', label: 'Purchase Requests' },
-    { key: 'forecast', label: 'Demand Forecast' },
     { key: 'analytics', label: 'Analytics' },
-    { key: 'suppliers', label: 'Supplier Approvals' },
+    { key: 'suppliers', label: 'Seller Approvals' },
     { key: 'help', label: 'Help' }
   ],
-  employee: [
+  buyer: [
     { key: 'products', label: 'Products' },
     { key: 'requests', label: 'Purchase Requests' },
     { key: 'forecast', label: 'Demand Forecast' },
     { key: 'analytics', label: 'Analytics' },
     { key: 'help', label: 'Help' }
   ],
-  supplier: [
+  seller: [
     { key: 'products', label: 'Products' },
     { key: 'requests', label: 'My Product Requests' },
     { key: 'help', label: 'Help' }
@@ -65,14 +64,14 @@ const DashboardPage = ({ user, token }) => {
         ))}
       </div>
       <div className="tab-content">
-        {user.role === 'supplier' && <SupplierNotifications token={token} user={user} />}
-        {tab === 'products' && user.role === 'supplier' && <ProductForm token={token} onProductAdded={handleProductAdded} />}
+        {user.role === 'seller' && <SupplierNotifications token={token} user={user} />}
+        {tab === 'products' && user.role === 'seller' && <ProductForm token={token} onProductAdded={handleProductAdded} />}
         {tab === 'products' && <ProductList token={token} refresh={refresh} user={user} />}
-        {tab === 'requests' && user.role === 'supplier' && <SupplierRequests token={token} user={user} onStatusChange={handleStatusChange} />}
-        {tab === 'requests' && user.role === 'employee' && <MyRequests token={token} user={user} onRated={handleProductAdded} />}
+        {tab === 'requests' && user.role === 'seller' && <SupplierRequests token={token} user={user} onStatusChange={handleStatusChange} />}
+        {tab === 'requests' && user.role === 'buyer' && <MyRequests token={token} user={user} onRated={handleProductAdded} />}
         {tab === 'requests' && user.role === 'admin' && <AdminAnalytics token={token} />}
-        {tab === 'forecast' && <ForecastChart token={token} />}
-        {tab === 'analytics' && <TrendsChart token={token} />}
+        {tab === 'forecast' && user.role !== 'admin' && <ForecastChart token={token} />}
+        {tab === 'analytics' && <Analytics token={token} />}
         {tab === 'suppliers' && user.role === 'admin' && <AdminSupplierApproval token={token} />}
         {tab === 'help' && (
           <div className="product-list" style={{ maxWidth: 600 }}>
@@ -82,13 +81,14 @@ const DashboardPage = ({ user, token }) => {
                 <b>Buyer:</b> View all available products, search/filter by name, raise purchase requests, see and track their own requests, rate products after purchase (from the requests tab), and view product ratings and analytics.
               </li>
               <li>
-                <b>Seller:</b> Add and manage their own products, see and approve/reject requests for their products, view notifications for request status changes, and see KPIs/analytics for their products.
+                <b>Seller:</b> Add new products, view and edit their own products, see and approve/reject requests for their products, view notifications for request status changes, and see KPIs/analytics for their products.
               </li>
               <li>
-                <b>Admin:</b> View all products and all purchase requests, see analytics and KPIs for the entire system. Cannot approve/reject requests.
+                <b>Admin:</b> View all products and all purchase requests, see analytics and KPIs for the entire system. Cannot approve/reject requests or add/edit products.
               </li>
             </ul>
             <p><b>Product Ratings:</b> Buyers can rate products only after their purchase request is approved (from the requests tab). Ratings are displayed in the product list for all roles and update in real-time after each new rating.</p>
+            <p><b>Seller Product Management:</b> Sellers can add new products using the form at the top of the Products tab, and edit their products using the Edit button in the product list.</p>
             <p>Use the tabs above to switch between features. On mobile, tabs stack vertically for easier access.</p>
           </div>
         )}

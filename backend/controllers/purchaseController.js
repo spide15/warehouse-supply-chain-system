@@ -2,37 +2,40 @@ const PurchaseRequest = require('../models/PurchaseRequest');
 const Product = require('../models/Product');
 
 exports.createRequest = async (req, res) => {
-  const { productId, quantity } = req.body;
+  const { product, requestedQty } = req.body;
   // Check product availability
-  const product = await Product.findById(productId);
-  if (!product || product.quantity < quantity) {
+  const prod = await Product.findById(product);
+  if (!prod || prod.quantity < requestedQty) {
     return res.status(400).json({ error: 'Product not available in requested quantity.' });
   }
-  const newRequest = new PurchaseRequest({ product: productId, quantity, requestedBy: req.user.id });
+  const newRequest = new PurchaseRequest({ product, requestedQty, requestedBy: req.user.id });
   await newRequest.save();
   res.status(201).json(newRequest);
 };
 
 exports.updateRequest = async (req, res) => {
-  // Only supplier of the product can approve/reject
-  const pr = await PurchaseRequest.findById(req.params.id).populate({ path: 'product', select: 'supplier' });
+  // Only seller of the product can approve/reject
+  const pr = await PurchaseRequest.findById(req.params.id).populate({ path: 'product', select: 'seller' });
   if (!pr) return res.status(404).json({ error: 'Request not found' });
-  if (!pr.product || pr.product.supplier.toString() !== req.user.id) {
-    return res.status(403).json({ error: 'Forbidden: Only the supplier of this product can authorize.' });
+  if (!pr.product || pr.product.seller.toString() !== req.user.id) {
+    return res.status(403).json({ error: 'Forbidden: Only the seller of this product can authorize.' });
   }
   const { status } = req.body;
+  if (status !== 'approved' && status !== 'rejected') {
+    return res.status(400).json({ error: 'Invalid status. Only approve or reject allowed.' });
+  }
   pr.status = status;
   if (status === 'approved') {
-    const product = await Product.findById(pr.product._id);
-    if (product) {
-      product.quantity -= pr.quantity;
-      await product.save();
+    const prod = await Product.findById(pr.product._id);
+    if (prod) {
+      prod.quantity -= pr.requestedQty;
+      await prod.save();
       const now = new Date();
-      pr.notification = `Supplier (${product.supplier}) notified: Prepare for dispatch. Approved at ${now.toLocaleString()}`;
+      pr.notification = `Seller (${prod.seller}) notified: Prepare for dispatch. Approved at ${now.toLocaleString()}`;
     }
   } else if (status === 'rejected') {
     const now = new Date();
-    pr.notification = `Request rejected at ${now.toLocaleString()}. Please check other options.`;
+    pr.notification = `Request rejected by seller at ${now.toLocaleString()}. Please check other options.`;
   }
   await pr.save();
   res.json(pr);
@@ -40,13 +43,19 @@ exports.updateRequest = async (req, res) => {
 
 exports.listRequests = async (req, res) => {
   let prs;
-  if (req.user.role === 'supplier') {
+  if (req.user.role === 'seller') {
     prs = await PurchaseRequest.find()
-      .populate({ path: 'product', populate: { path: 'supplier', select: '_id' } })
+      .populate({ path: 'product', populate: { path: 'seller', select: '_id name' } })
       .populate('requestedBy', 'name');
-    prs = prs.filter(r => r.product && (r.product.supplier?._id?.toString() === req.user.id || r.product.supplier?.toString() === req.user.id));
+    prs = prs.filter(r => r.product && (r.product.seller?._id?.toString() === req.user.id || r.product.seller?.toString() === req.user.id));
+  } else if (req.user.role === 'buyer') {
+    prs = await PurchaseRequest.find({ requestedBy: req.user.id })
+      .populate({ path: 'product', populate: { path: 'seller', select: '_id name' } })
+      .populate('requestedBy', 'name');
   } else {
-    prs = await PurchaseRequest.find().populate({ path: 'product', populate: { path: 'supplier', select: '_id' } }).populate('requestedBy', 'name');
+    prs = await PurchaseRequest.find()
+      .populate({ path: 'product', populate: { path: 'seller', select: '_id name' } })
+      .populate('requestedBy', 'name');
   }
   res.json(prs);
 };

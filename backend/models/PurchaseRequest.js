@@ -2,11 +2,12 @@ const mongoose = require('mongoose');
 
 const purchaseRequestSchema = new mongoose.Schema({
   product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-  quantity: Number,
   requestedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  requestedQty: Number,
   status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
-  notification: { type: String, default: '' }, // Notification message for supplier/employee
-  createdAt: { type: Date, default: Date.now }
+  notification: { type: String, default: '' },
+  createdAt: { type: Date, default: Date.now },
+  date: { type: Date } // for compatibility with seed and analytics
 });
 
 module.exports = mongoose.model('PurchaseRequest', purchaseRequestSchema);
